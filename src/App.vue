@@ -1,28 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="code" @click="refreshCode">
+
+      <!-- ：fresh：父组件向子组件传送刷新验证码的信号；
+    @makedCode：子组件向父组件传送验证码的值-->
+
+      <s-identify :fresh="flag" @makedCode="getMakedCode"></s-identify>
+    </div>
+
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import SIdentify from "@/components/identify.vue";
 export default {
-  name: 'app',
+  name: "codetest",
+  data() {
+    return {
+      flag: true, //该值变化，就会触发刷新
+      code: "" //刷新后的验证码
+    };
+  },
   components: {
-    HelloWorld
+    SIdentify
+  }, // 验证码初始化
+  mounted() {
+    this.flag = !this.flag;
+  },
+  methods: {
+    // 切换验证码
+    refreshCode() {
+      this.flag = !this.flag;
+    },
+    getMakedCode(code) {
+      this.code = code;
+      console.log("getMakedCode:", this.code);
+    }
   }
-}
+};
 </script>
+ 
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
